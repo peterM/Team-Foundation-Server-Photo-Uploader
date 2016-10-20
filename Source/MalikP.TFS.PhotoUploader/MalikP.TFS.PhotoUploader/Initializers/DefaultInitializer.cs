@@ -23,7 +23,7 @@ namespace MalikP.TFS.PhotoUploader.Initializers
                 Console.WriteLine(item);
             }
 
-            Console.WriteLine("############################");
+            Console.WriteLine("".PadLeft(50, '#'));
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.White;
         }
@@ -33,6 +33,11 @@ namespace MalikP.TFS.PhotoUploader.Initializers
             var list = new List<string>();
 
             var path = Assembly.GetExecutingAssembly().Location;
+
+            var executingAssemblyTypes = Assembly.GetExecutingAssembly()
+                                                 .GetTypes()
+                                                 .ToList();
+
             var files = Directory.EnumerateFiles(Path.GetDirectoryName(path), "*.dll");
             files = files.Where(file => !Path.GetFileName(file)
                                              .StartsWith("Microsoft", StringComparison.InvariantCultureIgnoreCase) &&
@@ -52,6 +57,8 @@ namespace MalikP.TFS.PhotoUploader.Initializers
                     var assembly = Assembly.LoadFrom(file);
                     var assemblyTypes = assembly.GetTypes()
                                                 .ToList();
+
+                    assemblyTypes.AddRange(executingAssemblyTypes);
 
                     var range = assemblyTypes.Where(d => !d.IsInterface &&
                                                          !d.IsAbstract &&
