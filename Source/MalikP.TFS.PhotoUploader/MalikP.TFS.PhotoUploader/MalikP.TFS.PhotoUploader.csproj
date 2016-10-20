@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{01C54B9B-2A72-416D-862D-D049E459C4F7}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MalikP.TFS.PhotoUploader</RootNamespace>
+    <AssemblyName>MalikP.TFS.PhotoUploader</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MalikP.IoC">
+      <HintPath>..\..\_AssemblyReference\MalikP.IoC.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Client">
+      <HintPath>..\..\_AssemblyReference\Microsoft.TeamFoundation.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Common">
+      <HintPath>..\..\_AssemblyReference\Microsoft.TeamFoundation.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.Client">
+      <HintPath>..\..\_AssemblyReference\Microsoft.VisualStudio.Services.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.Common">
+      <HintPath>..\..\_AssemblyReference\Microsoft.VisualStudio.Services.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.Identity">
+      <HintPath>..\..\_AssemblyReference\Microsoft.VisualStudio.Services.Identity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.WebApi">
+      <HintPath>..\..\_AssemblyReference\Microsoft.VisualStudio.Services.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Initializers\DefaultInitializer.cs" />
+    <Compile Include="Loggers\ConsoleLogger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Extensions\ReflectionExtension.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MalikP.TFS.Collections\MalikP.TFS.Collections.csproj">
+      <Project>{665b3747-0c1f-4b59-a7de-72c35fc8b75f}</Project>
+      <Name>MalikP.TFS.Collections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MalikP.TFS.Configuration\MalikP.TFS.Configuration.csproj">
+      <Project>{6d2bb8d8-897f-4841-9c33-0e74b7c07b5c}</Project>
+      <Name>MalikP.TFS.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MalikP.TFS.Identities\MalikP.TFS.Identities.csproj">
+      <Project>{079a8a02-1cff-40a2-9afe-601bc2a3e288}</Project>
+      <Name>MalikP.TFS.Identities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MalikP.TFS.PhotoProvider.ActiveDirectory\MalikP.TFS.PhotoProvider.ActiveDirectory.csproj">
+      <Project>{b41fceee-a966-477d-bc89-b585c8608650}</Project>
+      <Name>MalikP.TFS.PhotoProvider.ActiveDirectory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MalikP.TFS.PhotoProvider.FileSystem\MalikP.TFS.PhotoProvider.FileSystem.csproj">
+      <Project>{b12d1ceb-a336-47e9-bda4-08f37dcf42f0}</Project>
+      <Name>MalikP.TFS.PhotoProvider.FileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MalikP.TFS.PhotoProvider\MalikP.TFS.PhotoProvider.csproj">
+      <Project>{b895f110-9de0-4fde-99eb-b2e88f2f49d7}</Project>
+      <Name>MalikP.TFS.PhotoProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MalikP.TFS.PhotoUploader.Interface\MalikP.TFS.PhotoUploader.Interface.csproj">
+      <Project>{6e6746d8-760a-4bdd-8c27-f199135d8a5c}</Project>
+      <Name>MalikP.TFS.PhotoUploader.Interface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
