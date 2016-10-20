@@ -12,87 +12,141 @@ namespace MalikP.TFS.PhotoUploader.Initializers
 {
     public class DefaultInitializer
     {
-        protected static IIoC IoC => IocLocator.Container();
+        protected IIoC IoC => IocLocator.Container();
 
-        public static void WriteHeader(List<string> items)
+        public virtual void Configure(List<Type> configurableServices)
+        {
+            var alreadyConfiguredServices = new List<string>();
+            var applicationRootPath = GetApplicationRootPath();
+
+            var enumerableFiles = LoadFiles();
+            var files = FilterFiles(enumerableFiles).ToList();
+
+            foreach (var serviceType in configurableServices)
+            {
+                WriteHeader(alreadyConfiguredServices);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Configure type: {serviceType.GetPrettyTypeName()}");
+
+                var discoveredTypes = DiscoverServices(files, serviceType);
+                if (discoveredTypes != null && discoveredTypes.Count > 0)
+                {
+                    var selection = 0;
+                    selection = SelectFromService(discoveredTypes);
+
+                    var selectedInstanceType = RegisterService(serviceType, discoveredTypes, selection);
+                    var selectedTypeName = selectedInstanceType == null ? "NOT SELECTED OR NOT FOUND" : selectedInstanceType.Name;
+
+                    alreadyConfiguredServices.Add($"Configuration: {serviceType.GetPrettyTypeName()} Uses: {selectedTypeName}");
+                }
+            }
+
+            WriteHeader(alreadyConfiguredServices);
+        }
+
+        public virtual void WriteHeader(List<string> alreadyConfiguredServices)
         {
             Console.Clear();
-            foreach (var item in items)
+            foreach (var item in alreadyConfiguredServices)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(item);
             }
 
-            Console.WriteLine("############################");
+            Console.WriteLine("".PadLeft(50, '#'));
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public static void Configure(List<Type> configurableTypes)
+        protected virtual List<Type> DiscoverServices(List<string> files, Type serviceType)
         {
-            var list = new List<string>();
-
-            var path = Assembly.GetExecutingAssembly().Location;
-            var files = Directory.EnumerateFiles(Path.GetDirectoryName(path), "*.dll");
-            files = files.Where(file => !Path.GetFileName(file)
-                                             .StartsWith("Microsoft", StringComparison.InvariantCultureIgnoreCase) &&
-                                        !Path.GetFileName(file)
-                                             .StartsWith("Newtonsoft", StringComparison.InvariantCultureIgnoreCase))
-                         .ToList();
-
-            foreach (var serviceType in configurableTypes)
+            var discoveredTypes = new List<Type>();
+            foreach (var file in files)
             {
-                DefaultInitializer.WriteHeader(list);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Configure type: {serviceType.GetPrettyTypeName()}");
+                var assembly = Assembly.LoadFrom(file);
+                var assemblyTypes = assembly.GetTypes()
+                                            .ToList();
 
-                var searchedTypes = new List<Type>();
-                foreach (var file in files)
-                {
-                    var assembly = Assembly.LoadFrom(file);
-                    var assemblyTypes = assembly.GetTypes()
-                                                .ToList();
+                var range = assemblyTypes.Where(d => !d.IsInterface &&
+                                                     !d.IsAbstract &&
+                                                     serviceType != d &&
+                                                     serviceType.IsAssignableFrom(d))
+                                         .ToList();
 
-                    var range = assemblyTypes.Where(d => !d.IsInterface &&
-                                                         !d.IsAbstract &&
-                                                         serviceType != d &&
-                                                         serviceType.IsAssignableFrom(d))
-                                             .ToList();
-
-                    if (range != null && range.Count > 0)
-                        searchedTypes.AddRange(range);
-                }
-
-                if (searchedTypes != null && searchedTypes.Count > 0)
-                {
-                    var i = 0;
-                    foreach (var searchedType in searchedTypes)
-                    {
-                        i++;
-                        Console.ForegroundColor = ConsoleColor.Blue;
-
-                        Console.WriteLine($"{i}. {searchedType.Name}");
-
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-
-                    var selection = int.Parse(Console.ReadLine());
-                    selection--;
-
-                    Type instanceType = null;
-                    if (selection >= 0 && selection < searchedTypes.Count)
-                    {
-                        instanceType = searchedTypes[selection];
-                        IoC.Register(serviceType, instanceType, Activator.CreateInstance(instanceType));
-                    }
-
-                    var selectedTypeName = instanceType == null ? "NOT SELECTED OR NOT FOUND" : instanceType.Name;
-
-                    list.Add($"Configuration: {serviceType.GetPrettyTypeName()} Uses: {selectedTypeName}");
-                }
+                if (range != null && range.Count > 0)
+                    discoveredTypes.AddRange(range);
             }
 
-            DefaultInitializer.WriteHeader(list);
+            return discoveredTypes;
+        }
+
+        protected virtual IEnumerable<string> FilterFiles(IEnumerable<string> files)
+        {
+            return files.Where(file => !Path.GetFileName(file)
+                                            .StartsWith("Microsoft", StringComparison.InvariantCultureIgnoreCase) &&
+                                       !Path.GetFileName(file)
+                                            .StartsWith("Newtonsoft", StringComparison.InvariantCultureIgnoreCase) &&
+                                       !Path.GetFileName(file)
+                                            .ToUpperInvariant()
+                                            .Contains("IOC") &&
+                                       !Path.GetFileName(file)
+                                            .ToUpperInvariant()
+                                            .Contains(".VSHOST."));
+        }
+
+        protected virtual string GetApplicationRootPath()
+        {
+            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        }
+
+        protected virtual IEnumerable<string> LoadFiles()
+        {
+            return Directory.EnumerateFiles(GetApplicationRootPath(), "*.*", SearchOption.AllDirectories)
+                            .Where(s => s.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase) ||
+                                        s.EndsWith(".exe", StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        protected virtual Type RegisterService(Type serviceType, List<Type> discoveredTypes, int selection)
+        {
+            Type selectedInstanceType = null;
+
+            if (selection >= 0 && selection < discoveredTypes.Count)
+            {
+                selectedInstanceType = discoveredTypes[selection];
+                IoC.Register(serviceType, selectedInstanceType, Activator.CreateInstance(selectedInstanceType));
+            }
+
+            return selectedInstanceType;
+        }
+
+        protected virtual int SelectFromService(List<Type> discoveredTypes)
+        {
+            int selection;
+            if (discoveredTypes.Count > 1)
+            {
+                ShowDiscoveredServices(discoveredTypes);
+
+                selection = int.Parse(Console.ReadLine());
+                selection--;
+            }
+            else
+            {
+                selection = 0;
+            }
+
+            return selection;
+        }
+
+        protected virtual void ShowDiscoveredServices(List<Type> discoveredTypes)
+        {
+            var iterator = 0;
+            foreach (var instanceType in discoveredTypes)
+            {
+                iterator++;
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine($"{iterator}. {instanceType.Name}");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
         }
     }
 }
