@@ -28,12 +28,15 @@ namespace MalikP.TFS.PhotoUploader
         static ITfsProfilePhotoChecker _profilePhotoChecker => _container.Resolve<ITfsProfilePhotoChecker>();
 
         static List<Type> ConfigurableTypes { get; set; } = new List<Type>();
+        static DefaultInitializer _initializer { get; }
 
         static Program()
         {
             IocLocator.Container(new AdvancedContainerFactory());
             _container.Register<TfsProperties>();
             _container.Register<IProcessLogger, ConsoleLogger>();
+
+            _initializer = new DefaultInitializer();
 
             CreateServiceList();
         }
@@ -53,7 +56,7 @@ namespace MalikP.TFS.PhotoUploader
 
         static int Main(string[] args)
         {
-            DefaultInitializer.Configure(ConfigurableTypes);
+            _initializer.Configure(ConfigurableTypes);
 
             var result = 0;
 
@@ -140,7 +143,7 @@ namespace MalikP.TFS.PhotoUploader
                             tfsIdentity.SetProperty(extendedProperty.Key, extendedProperty.Value);
                         }
 
-                        // _tfsIdentityManagementServiceProvider.UpdateExtendedProperties(tfsIdentity);
+                        _tfsIdentityManagementServiceProvider.UpdateExtendedProperties(tfsIdentity);
                         Logger.LogInfo($"Photo uploaded successfully for: {identityKey}");
                     }
                     else
