@@ -33,16 +33,21 @@ namespace MalikP.TFS.PhotoUploader.Initializers
             var list = new List<string>();
 
             var path = Assembly.GetExecutingAssembly().Location;
+            var files = Directory.EnumerateFiles(Path.GetDirectoryName(path), "*.dll")
+                                 .ToList();
 
-            var executingAssemblyTypes = Assembly.GetExecutingAssembly()
-                                                 .GetTypes()
-                                                 .ToList();
+            files.AddRange(Directory.EnumerateFiles(Path.GetDirectoryName(path), "*.exe"));
 
-            var files = Directory.EnumerateFiles(Path.GetDirectoryName(path), "*.dll");
             files = files.Where(file => !Path.GetFileName(file)
                                              .StartsWith("Microsoft", StringComparison.InvariantCultureIgnoreCase) &&
                                         !Path.GetFileName(file)
-                                             .StartsWith("Newtonsoft", StringComparison.InvariantCultureIgnoreCase))
+                                             .StartsWith("Newtonsoft", StringComparison.InvariantCultureIgnoreCase) &&
+                                        !Path.GetFileName(file)
+                                             .ToUpperInvariant()
+                                             .Contains("IOC") &&
+                                        !Path.GetFileName(file)
+                                             .ToUpperInvariant()
+                                             .Contains(".VSHOST."))
                          .ToList();
 
             foreach (var serviceType in configurableTypes)
@@ -57,8 +62,6 @@ namespace MalikP.TFS.PhotoUploader.Initializers
                     var assembly = Assembly.LoadFrom(file);
                     var assemblyTypes = assembly.GetTypes()
                                                 .ToList();
-
-                    assemblyTypes.AddRange(executingAssemblyTypes);
 
                     var range = assemblyTypes.Where(d => !d.IsInterface &&
                                                          !d.IsAbstract &&
