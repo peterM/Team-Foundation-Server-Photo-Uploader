@@ -75,19 +75,26 @@ namespace MalikP.TFS.PhotoUploader.Initializers
 
                 if (searchedTypes != null && searchedTypes.Count > 0)
                 {
-                    var i = 0;
-                    foreach (var searchedType in searchedTypes)
+                    var selection = 0;
+                    if (searchedTypes.Count > 1)
                     {
-                        i++;
-                        Console.ForegroundColor = ConsoleColor.Blue;
+                        foreach (var searchedType in searchedTypes)
+                        {
+                            selection++;
+                            Console.ForegroundColor = ConsoleColor.Blue;
 
-                        Console.WriteLine($"{i}. {searchedType.Name}");
+                            Console.WriteLine($"{selection}. {searchedType.Name}");
 
-                        Console.ForegroundColor = ConsoleColor.White;
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+
+                        selection = int.Parse(Console.ReadLine());
+                        selection--;
                     }
-
-                    var selection = int.Parse(Console.ReadLine());
-                    selection--;
+                    else
+                    {
+                        selection = 0;
+                    }
 
                     Type instanceType = null;
                     if (selection >= 0 && selection < searchedTypes.Count)
