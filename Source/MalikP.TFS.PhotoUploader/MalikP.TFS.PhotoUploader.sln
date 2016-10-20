@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MalikP.TFS.PhotoUploader", "MalikP.TFS.PhotoUploader\MalikP.TFS.PhotoUploader.csproj", "{01C54B9B-2A72-416D-862D-D049E459C4F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MalikP.TFS.PhotoUploader.Interface", "MalikP.TFS.PhotoUploader.Interface\MalikP.TFS.PhotoUploader.Interface.csproj", "{6E6746D8-760A-4BDD-8C27-F199135D8A5C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_AssemblyReference", "_AssemblyReference", "{2DF167E5-0918-4D0B-961B-1AA788314543}"
+	ProjectSection(SolutionItems) = preProject
+		..\_AssemblyReference\MalikP.IoC.dll = ..\_AssemblyReference\MalikP.IoC.dll
+		..\_AssemblyReference\MalikP.IoC.pdb = ..\_AssemblyReference\MalikP.IoC.pdb
+		..\_AssemblyReference\Microsoft.TeamFoundation.Client.dll = ..\_AssemblyReference\Microsoft.TeamFoundation.Client.dll
+		..\_AssemblyReference\Microsoft.TeamFoundation.Common.dll = ..\_AssemblyReference\Microsoft.TeamFoundation.Common.dll
+		..\_AssemblyReference\Microsoft.VisualStudio.Services.Client.dll = ..\_AssemblyReference\Microsoft.VisualStudio.Services.Client.dll
+		..\_AssemblyReference\Microsoft.VisualStudio.Services.Common.dll = ..\_AssemblyReference\Microsoft.VisualStudio.Services.Common.dll
+		..\_AssemblyReference\Microsoft.VisualStudio.Services.Identity.dll = ..\_AssemblyReference\Microsoft.VisualStudio.Services.Identity.dll
+		..\_AssemblyReference\Microsoft.VisualStudio.Services.WebApi.dll = ..\_AssemblyReference\Microsoft.VisualStudio.Services.WebApi.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MalikP.TFS.Configuration", "MalikP.TFS.Configuration\MalikP.TFS.Configuration.csproj", "{6D2BB8D8-897F-4841-9C33-0E74B7C07B5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MalikP.TFS.Collections", "MalikP.TFS.Collections\MalikP.TFS.Collections.csproj", "{665B3747-0C1F-4B59-A7DE-72C35FC8B75F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MalikP.TFS.Identities", "MalikP.TFS.Identities\MalikP.TFS.Identities.csproj", "{079A8A02-1CFF-40A2-9AFE-601BC2A3E288}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MalikP.TFS.PhotoProvider", "MalikP.TFS.PhotoProvider\MalikP.TFS.PhotoProvider.csproj", "{B895F110-9DE0-4FDE-99EB-B2E88F2F49D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MalikP.TFS.PhotoProvider.FileSystem", "MalikP.TFS.PhotoProvider.FileSystem\MalikP.TFS.PhotoProvider.FileSystem.csproj", "{B12D1CEB-A336-47E9-BDA4-08F37DCF42F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MalikP.TFS.PhotoProvider.ActiveDirectory", "MalikP.TFS.PhotoProvider.ActiveDirectory\MalikP.TFS.PhotoProvider.ActiveDirectory.csproj", "{B41FCEEE-A966-477D-BC89-B585C8608650}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01C54B9B-2A72-416D-862D-D049E459C4F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01C54B9B-2A72-416D-862D-D049E459C4F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01C54B9B-2A72-416D-862D-D049E459C4F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01C54B9B-2A72-416D-862D-D049E459C4F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E6746D8-760A-4BDD-8C27-F199135D8A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E6746D8-760A-4BDD-8C27-F199135D8A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E6746D8-760A-4BDD-8C27-F199135D8A5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E6746D8-760A-4BDD-8C27-F199135D8A5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D2BB8D8-897F-4841-9C33-0E74B7C07B5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D2BB8D8-897F-4841-9C33-0E74B7C07B5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D2BB8D8-897F-4841-9C33-0E74B7C07B5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D2BB8D8-897F-4841-9C33-0E74B7C07B5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{665B3747-0C1F-4B59-A7DE-72C35FC8B75F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{665B3747-0C1F-4B59-A7DE-72C35FC8B75F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{665B3747-0C1F-4B59-A7DE-72C35FC8B75F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{665B3747-0C1F-4B59-A7DE-72C35FC8B75F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{079A8A02-1CFF-40A2-9AFE-601BC2A3E288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{079A8A02-1CFF-40A2-9AFE-601BC2A3E288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{079A8A02-1CFF-40A2-9AFE-601BC2A3E288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{079A8A02-1CFF-40A2-9AFE-601BC2A3E288}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B895F110-9DE0-4FDE-99EB-B2E88F2F49D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B895F110-9DE0-4FDE-99EB-B2E88F2F49D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B895F110-9DE0-4FDE-99EB-B2E88F2F49D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B895F110-9DE0-4FDE-99EB-B2E88F2F49D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B12D1CEB-A336-47E9-BDA4-08F37DCF42F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B12D1CEB-A336-47E9-BDA4-08F37DCF42F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B12D1CEB-A336-47E9-BDA4-08F37DCF42F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B12D1CEB-A336-47E9-BDA4-08F37DCF42F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B41FCEEE-A966-477D-BC89-B585C8608650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B41FCEEE-A966-477D-BC89-B585C8608650}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B41FCEEE-A966-477D-BC89-B585C8608650}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B41FCEEE-A966-477D-BC89-B585C8608650}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
