@@ -25,6 +25,7 @@ namespace MalikP.TFS.PhotoUploader
         static IPhotoProvider _photoProvider => _container.Resolve<IPhotoProvider>();
         static ISettings _photoProviderSettings => _container.Resolve<ISettings>();
         static IProcessLogger Logger => _container.Resolve<IProcessLogger>();
+        static ITfsProfilePhotoChecker _profilePhotoChecker => _container.Resolve<ITfsProfilePhotoChecker>();
 
         static List<Type> ConfigurableTypes { get; set; } = new List<Type>();
 
@@ -45,6 +46,7 @@ namespace MalikP.TFS.PhotoUploader
             ConfigurableTypes.Add(typeof(ITfsIdentityManagementServiceProvider<TfsTeamProjectCollection, TeamFoundationIdentity>));
             ConfigurableTypes.Add(typeof(IPhotoProvider));
             ConfigurableTypes.Add(typeof(ISettings));
+            ConfigurableTypes.Add(typeof(ITfsProfilePhotoChecker));
         }
 
         static bool useExplicitCollectionId;
@@ -101,6 +103,8 @@ namespace MalikP.TFS.PhotoUploader
 
                 Logger.LogInfo($"Discovered TFS Identities: {tfsIdentities.Count}");
 
+                _profilePhotoChecker.Initialize(_tfsProperties);
+
                 foreach (TeamFoundationIdentity tfsIdentity in tfsIdentities)
                 {
                     var identityKey = tfsIdentity.UniqueName;
@@ -109,18 +113,11 @@ namespace MalikP.TFS.PhotoUploader
                     var tfsIdentityExtended = _tfsIdentityManagementServiceProvider.ReadExtendedProperties(tfsIdentity);
 
                     Logger.LogInfo($"Initializing TFS Profile Photo Validator");
-                    object pictureData = null;
-                    if (tfsIdentityExtended.TryGetProperty(IdentityPropertyScope.Both, _tfsProperties.Microsoft_TeamFoundation_Identity_Image_Id, out pictureData))
-                    {
-                        //var photoBytesData = (byte[])pictureData;
-                        //if (pictureData != null &&
-                        //    photoBytesData != null &&
-                        //    photoBytesData.Length == 16)
-                        //{
-                        //    continue;
-                        //}
 
-                        // continue;
+                    _profilePhotoChecker.Initialize(tfsIdentityExtended);
+                    if (_profilePhotoChecker.HasProfilePhoto())
+                    {
+                        continue;
                     }
 
                     Logger.LogInfo($"Initializing Photo provider");
