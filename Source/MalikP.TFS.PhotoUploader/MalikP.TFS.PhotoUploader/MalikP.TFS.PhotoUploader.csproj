@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="MalikP.TFS.PhotoUploader.licenseheader" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MalikP.TFS.Collections\MalikP.TFS.Collections.csproj">
