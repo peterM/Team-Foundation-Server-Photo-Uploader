@@ -32,19 +32,24 @@ namespace MalikP.TFS.PhotoProvider.Settings
     public class ActiveDirectoryPhotoProviderSettings : PhotoProviderSettings
     {
         public virtual string Domain { get; set; }
-        public virtual string LdapDomain
+        public virtual string LDAP_Domain
         {
             get
             {
                 return $"LDAP://{Domain}";
             }
         }
+
+        public virtual string UserName { get; set; }
+        public virtual string UserPassword { get; set; }
         public virtual string PhotoAttribute { get; set; } = "thumbnailphoto";
 
         public override void UseDefaults()
         {
             Domain = ConfigurationManager.AppSettings[$"MalikP.TFS.PhotoProvider.Settings.ActiveDirectoryPhotoProviderSettings.{nameof(Domain)}"];
             PhotoAttribute = ConfigurationManager.AppSettings[$"MalikP.TFS.PhotoProvider.Settings.ActiveDirectoryPhotoProviderSettings.{nameof(PhotoAttribute)}"];
+            UserName = ConfigurationManager.AppSettings[$"MalikP.TFS.PhotoProvider.Settings.ActiveDirectoryPhotoProviderSettings.{nameof(UserName)}"];
+            UserPassword = ConfigurationManager.AppSettings[$"MalikP.TFS.PhotoProvider.Settings.ActiveDirectoryPhotoProviderSettings.{nameof(UserPassword)}"];
         }
     }
 }

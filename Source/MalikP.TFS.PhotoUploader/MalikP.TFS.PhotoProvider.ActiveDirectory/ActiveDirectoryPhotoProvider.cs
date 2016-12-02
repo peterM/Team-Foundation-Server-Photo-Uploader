@@ -73,19 +73,20 @@ namespace MalikP.TFS.PhotoProvider
         public override byte[] GetPhotoBytes(object key)
         {
             byte[] photoBytes = null;
-            using (var context = new PrincipalContext(ContextType.Domain, Settings.Domain))
+
+            using (var context = GetPrincipalContext())
             using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
             {
                 var adUser = searcher.FindAll()
                                      .SingleOrDefault(m =>
-                {
-                    var account = (NTAccount)m.Sid.Translate(typeof(NTAccount));
-                    return string.Equals(account.ToString(), key.ToString(), StringComparison.InvariantCultureIgnoreCase);
-                });
+                                     {
+                                         var account = (NTAccount)m.Sid.Translate(typeof(NTAccount));
+                                         return string.Equals(account.ToString(), key.ToString(), StringComparison.InvariantCultureIgnoreCase);
+                                     });
 
                 if (adUser != null)
                 {
-                    var directoryEntry = new DirectoryEntry(Settings.LdapDomain);
+                    var directoryEntry = new DirectoryEntry(Settings.LDAP_Domain);
                     using (var directorySearcher = new DirectorySearcher(directoryEntry))
                     {
                         directorySearcher.Filter = $"(&(SAMAccountName={adUser.SamAccountName}))";
@@ -102,6 +103,21 @@ namespace MalikP.TFS.PhotoProvider
             }
 
             return photoBytes;
+        }
+
+        protected virtual PrincipalContext GetPrincipalContext()
+        {
+            return new PrincipalContext(ContextType.Domain, Settings.Domain, GetUserName(), GetUserPassword());
+        }
+
+        protected virtual string GetUserPassword()
+        {
+            return Settings.UserPassword;
+        }
+
+        protected virtual string GetUserName()
+        {
+            return Settings.UserName;
         }
     }
 }
