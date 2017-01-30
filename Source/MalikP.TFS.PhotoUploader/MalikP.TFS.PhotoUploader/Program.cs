@@ -97,7 +97,7 @@ namespace MalikP.TFS.PhotoUploader
                 foreach (var teamCollection in tfsTeamCollections)
                 {
                     i++;
-                    Logger.LogInfo($"{i}. Project Collection discovered: {teamCollection.Key}");
+                    Logger.LogDebug($"{i}. Project Collection discovered: {teamCollection.Key}");
                 }
 
                 i = int.Parse(Console.ReadLine());
@@ -131,6 +131,9 @@ namespace MalikP.TFS.PhotoUploader
 
                 foreach (TeamFoundationIdentity tfsIdentity in tfsIdentities)
                 {
+                    Logger.LogDebug("\r\n");
+                    Logger.LogDebug($"{"".PadLeft(30, '-')}STARTING{ "".PadLeft(30, '-')}");
+
                     var identityKey = tfsIdentity.UniqueName;
                     Logger.LogInfo($"Processing TFS Identity: {identityKey}");
                     Logger.LogInfo($"Reading Extended Properties for Identity: {identityKey}");
@@ -141,6 +144,7 @@ namespace MalikP.TFS.PhotoUploader
                     _profilePhotoChecker.Initialize(tfsIdentityExtended);
                     if (_profilePhotoChecker.HasProfilePhoto())
                     {
+                        IdentityFinnishLog(identityKey);
                         continue;
                     }
 
@@ -165,15 +169,14 @@ namespace MalikP.TFS.PhotoUploader
                         }
 
                         _tfsIdentityManagementServiceProvider.UpdateExtendedProperties(tfsIdentity);
-                        Logger.LogInfo($"Photo uploaded successfully for: {identityKey}");
+                        Logger.LogDebug($"Photo uploaded successfully for: {identityKey}");
                     }
                     else
                     {
                         Logger.LogWarning($"Photo data for identity was not discovered: {identityKey}");
                     }
 
-                    Logger.LogInfo($"Finnished for: {identityKey}");
-                    Logger.LogDebug("".PadLeft(50, '#'));
+                    IdentityFinnishLog(identityKey);
                 }
             }
             catch (Exception ex)
@@ -183,6 +186,13 @@ namespace MalikP.TFS.PhotoUploader
             }
 
             return result;
+        }
+
+        private static void IdentityFinnishLog(string identityKey)
+        {
+            Logger.LogWarning("Identity already has photo !!!");
+            Logger.LogDebug($"Finnished for: {identityKey}");
+            Logger.LogDebug("".PadLeft(68, '#'));
         }
     }
 }
